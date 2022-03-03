@@ -58,11 +58,15 @@ export const en = {
     userguide: 'User Guide',
     profile: 'Profile',
     viewlive: 'View Live Streaming',
+    percentage: '80%',
+    connected: 'Connected',
   },
-  ecgrecords: {
+  ecgrecord: {
     normal: 'Patient is Normal',
     bpmaverage: 'BPM Average',
     sinus: 'Sinus tachycardia Otherwise Normal ECG',
+    date: '14/08/21',
+    heading: 'ECG Records',
   },
   livestreaming: {
     excellent: 'Excellent',

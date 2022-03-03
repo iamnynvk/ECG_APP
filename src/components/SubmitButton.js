@@ -3,13 +3,15 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {SIZES} from '../constants/theme';
 import {en} from '../localization/en';
 
-const SubmitButton = ({onPress}) => {
+const SubmitButton = ({title, onPress}) => {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.container}>
-        <Text style={styles.buttonText}>{en.login.login}</Text>
-      </View>
-    </TouchableOpacity>
+    <View style={styles.container}>
+      <TouchableOpacity onPress={onPress}>
+        <View style={styles.childContainer}>
+          <Text style={styles.buttonText}>{title}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -20,6 +22,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
     marginVertical: SIZES.height * 0.05,
+  },
+  childContainer: {
+    height: SIZES.height * 0.06,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     color: '#fff',

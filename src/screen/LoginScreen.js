@@ -89,7 +89,10 @@ const LoginScreen = ({navigation}) => {
 
             {/* Button Submit */}
             <View>
-              <SubmitButton onPress={submitButtonHandler} />
+              <SubmitButton
+                title={en.login.login}
+                onPress={submitButtonHandler}
+              />
             </View>
 
             {/* Forgot Password */}
