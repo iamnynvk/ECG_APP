@@ -32,7 +32,7 @@ const Header = ({backIcon, headerName, sideIcon, backAction, sideAction}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: SIZES.height * 0.08,
+    height: SIZES.base * 8,
     alignItems: 'center',
   },
   backView: {
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   headerName: {
     fontFamily: 'OpenSans-Bold',
     color: '#1b1a21',
-    fontSize: SIZES.width * 0.05,
+    fontSize: SIZES.base * 2.5,
   },
   sideView: {
     flex: 0.1,

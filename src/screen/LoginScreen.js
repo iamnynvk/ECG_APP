@@ -8,6 +8,7 @@ import SubmitButton from '../components/SubmitButton';
 import Error from '../components/Error';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {NAVIGATION} from '../constants/navigation';
+import useOrientation from '../hooks/useOrientation';
 
 const LoginScreen = ({navigation}) => {
   // State here...
@@ -15,6 +16,10 @@ const LoginScreen = ({navigation}) => {
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+
+  // Hook for Screen Orientation
+  const orientation = useOrientation();
+  let screen = orientation.isPortrait;
 
   // Refs here...
   const InputRef = useRef();
@@ -41,16 +46,37 @@ const LoginScreen = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, {flexDirection: screen ? 'column' : 'row'}]}>
       {/* Header Top */}
       <View style={styles.headerTopView}>
-        <Image source={images.logos} style={styles.headerlogo} />
+        <Image
+          source={images.logos}
+          style={[
+            styles.headerlogo,
+            {
+              width: screen ? SIZES.base * 15 : SIZES.base * 13,
+              height: screen ? SIZES.base * 13 : SIZES.base * 9,
+            },
+          ]}
+        />
         <Text style={styles.headertext}>{en.common.ECG}</Text>
       </View>
-      <View style={styles.loginView}>
+      <View
+        style={[
+          styles.loginView,
+          {
+            borderTopRightRadius: screen ? SIZES.padding : 0,
+            borderBottomLeftRadius: screen ? 0 : SIZES.padding,
+          },
+        ]}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* gretting text */}
-          <View style={styles.MainLoginView}>
+          <View
+            style={[
+              styles.MainLoginView,
+              {marginVertical: screen ? '8%' : '5%'},
+            ]}>
             <View>
               <Text style={styles.welcomeText}>{en.login.welcome}</Text>
               <Text style={styles.continueText}>{en.login.continue}</Text>
@@ -103,7 +129,7 @@ const LoginScreen = ({navigation}) => {
             </View>
 
             {/* Sign Up */}
-            <View>
+            <View style={styles.signupView}>
               <TouchableOpacity>
                 <View style={styles.signupButtonView}>
                   <Text style={styles.buttonText}>{en.login.Signup}</Text>
@@ -127,8 +153,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerlogo: {
-    width: SIZES.width * 0.3,
-    height: SIZES.height * 0.12,
     alignSelf: 'center',
   },
   headertext: {
@@ -142,21 +166,19 @@ const styles = StyleSheet.create({
     flex: 2,
     backgroundColor: '#fff',
     borderTopLeftRadius: SIZES.padding,
-    borderTopRightRadius: SIZES.padding,
   },
   MainLoginView: {
     marginHorizontal: SIZES.base + '%',
-    marginVertical: SIZES.base + '%',
   },
   welcomeText: {
-    fontSize: SIZES.height * 0.025,
+    fontSize: SIZES.base * 2.5,
     fontFamily: 'OpenSans-Bold',
     color: 'black',
   },
   continueText: {
-    fontSize: SIZES.height * 0.018,
+    fontSize: SIZES.base * 1.8,
     fontFamily: 'OpenSans-Medium',
-    marginTop: SIZES.height * 0.015,
+    marginTop: SIZES.base * 1,
   },
   forgotView: {
     justifyContent: 'center',
@@ -166,13 +188,15 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSans-Regular',
     color: '#534284',
   },
+  signupView: {
+    marginTop: SIZES.base * 5,
+  },
   signupButtonView: {
-    marginTop: SIZES.height * 0.04,
     borderWidth: 1,
     borderColor: '#534284',
     justifyContent: 'center',
     alignItems: 'center',
-    height: SIZES.height * 0.06,
+    height: SIZES.base * 6,
     borderRadius: 10,
   },
   buttonText: {

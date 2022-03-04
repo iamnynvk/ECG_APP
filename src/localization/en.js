@@ -84,6 +84,8 @@ export const en = {
     profile: 'Profile',
     edit: 'Edit',
     logout: 'Logout',
+    name: 'Michelle Rose',
+    email: 'mise31@gmail.com',
   },
   editprofile: {
     firstname: 'First Name',

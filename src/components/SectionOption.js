@@ -13,11 +13,11 @@ const SectionOption = ({iconType, option, goIcon, onPress}) => {
             <View
               style={{
                 flex: 1,
-                width: SIZES.width * 0.15,
+                width: SIZES.base * 8,
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: '#f7f6f8',
-                borderRadius: SIZES.height * 2,
+                borderRadius: (SIZES.base * 8) / 2,
                 overflow: 'hidden',
                 marginHorizontal: 3,
                 marginVertical: 3,
@@ -47,12 +47,12 @@ const SectionOption = ({iconType, option, goIcon, onPress}) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    marginTop: SIZES.height * 0.03,
+    marginTop: SIZES.base * 3,
     marginHorizontal: SIZES.base + '%',
-    maeginBottom: SIZES.height * 0.03,
+    maeginBottom: SIZES.base * 0.3,
   },
   container: {
-    height: SIZES.height * 0.08,
+    height: SIZES.base * 8.2,
     flexDirection: 'row',
     alignContent: 'center',
     justifyContent: 'center',
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     marginHorizontal: SIZES.base * 3,
     fontFamily: 'OpenSans-Medium',
     color: '#1b1a21',
-    fontSize: SIZES.width * 0.04,
+    fontSize: SIZES.base * 2.2,
   },
   iconActionView: {
     flex: 0.2,
