@@ -2,8 +2,12 @@ import React, {useRef, useEffect} from 'react';
 import {View, StyleSheet, TextInput} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {SIZES} from '../constants/theme';
+import useOrientation from '../hooks/useOrientation';
 
 const InputForm = React.forwardRef((props, ref) => {
+  const orientation = useOrientation();
+  const screen = orientation.isPortrait;
+
   const {
     values,
     onChangeTexts,
@@ -46,9 +50,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    marginTop: SIZES.height * 0.03,
     borderWidth: 1,
     borderRadius: 10,
+    marginTop: SIZES.base * 4,
   },
   iconView: {
     marginHorizontal: SIZES.height * 0.01,

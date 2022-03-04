@@ -19,33 +19,34 @@ import useOrientation from '../hooks/useOrientation';
 const DashboardScreen = ({navigation}) => {
   // using hooks to get the orientation of the device
   const orientation = useOrientation();
+  const screen = orientation.isPortrait;
 
-  console.log('orientation >>>> ', orientation);
-
-  const isPortrait = orientation.isPortrait;
-  console.log(isPortrait);
+  console.log(screen);
 
   return (
     <View
-      style={[
-        styles.container,
-        {flexDirection: isPortrait ? 'column' : 'row'},
-      ]}>
+      style={[styles.container, {flexDirection: screen ? 'column' : 'row'}]}>
       {/* Header Top */}
       <View style={styles.headerTopView}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.headerText}>{en.dashboard.dashboard}</Text>
+          <Text
+            style={[
+              styles.headerText,
+              {marginTop: screen ? SIZES.base * 1 : SIZES.base * 1},
+            ]}>
+            {en.dashboard.dashboard}
+          </Text>
 
           {/* Name & Profile  */}
           <View
             style={[
               styles.profileView,
               {
-                flexDirection: isPortrait ? 'row' : 'column',
-                alignItems: isPortrait ? 'center' : 'center',
+                flexDirection: screen ? 'row' : 'column',
+                alignItems: screen ? 'center' : 'center',
               },
             ]}>
-            <View style={[styles.imageView, {}]}>
+            <View style={[styles.imageView]}>
               <Image
                 source={{
                   uri: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -56,9 +57,12 @@ const DashboardScreen = ({navigation}) => {
             <View
               style={[
                 styles.textView,
-                {alignItems: isPortrait ? 'flex-start' : 'center'},
+                {alignItems: screen ? 'flex-start' : 'center'},
               ]}>
-              <View style={styles.greetingView}>
+              <View
+                style={{
+                  marginTop: screen ? SIZES.base * 1.5 : SIZES.base * 0.5,
+                }}>
                 <Text style={styles.greetingText}>{en.dashboard.welcome}</Text>
               </View>
 
@@ -69,22 +73,21 @@ const DashboardScreen = ({navigation}) => {
           </View>
 
           {/* BPM & Heart */}
-          <View
-            style={[
-              styles.bpmView,
-              {marginTop: isPortrait ? 0 : SIZES.base * 4},
-            ]}>
-            <View>
+          <View style={styles.bpmView}>
+            <View
+              style={{
+                marginTop: screen ? SIZES.base * 2.5 : SIZES.base * 10,
+              }}>
               <FontAwesome5
                 name="heart"
                 solid
-                size={40}
+                size={35}
                 style={styles.imageSet}
                 color="#ff5737"
               />
             </View>
 
-            <View style={styles.bpmTextView}>
+            <View>
               <Text style={styles.bpmText}>60 {en.dashboard.bpmaverage}</Text>
             </View>
           </View>
@@ -96,8 +99,8 @@ const DashboardScreen = ({navigation}) => {
         style={[
           styles.loginView,
           {
-            borderTopRightRadius: isPortrait ? SIZES.padding : 0,
-            borderBottomLeftRadius: isPortrait ? 0 : SIZES.padding,
+            borderTopRightRadius: screen ? SIZES.padding : 0,
+            borderBottomLeftRadius: screen ? 0 : SIZES.padding,
           },
         ]}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -117,7 +120,7 @@ const DashboardScreen = ({navigation}) => {
                   </View>
 
                   {/* indicator text */}
-                  <View style={styles.indicatorTextView}>
+                  <View>
                     <Text style={styles.indicatorText}>
                       {en.dashboard.battery}
                     </Text>
@@ -149,7 +152,7 @@ const DashboardScreen = ({navigation}) => {
                   </View>
 
                   {/* indicator text */}
-                  <View style={styles.indicatorTextView}>
+                  <View>
                     <Text style={styles.indicatorText}>
                       {en.dashboard.device}
                     </Text>
@@ -220,9 +223,8 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'white',
     alignSelf: 'center',
-    marginTop: SIZES.height * 0.01,
     fontFamily: 'OpenSans-Bold',
-    fontSize: SIZES.width * 0.05,
+    fontSize: SIZES.base * 2.8,
   },
   loginView: {
     flex: 2,
@@ -234,31 +236,29 @@ const styles = StyleSheet.create({
     marginTop: SIZES.height * 0.04,
   },
   imageView: {
-    height: SIZES.height * 0.14,
-    width: SIZES.height * 0.14,
+    height: SIZES.base * 13,
+    width: SIZES.base * 13,
     borderWidth: 2,
     borderColor: '#fff',
     overflow: 'hidden',
-    borderRadius: (SIZES.height * 0.14) / 2,
-    borderWidth: 2,
+    borderRadius: (SIZES.base * 13) / 2,
   },
   images: {
-    height: SIZES.height * 0.14,
-    width: SIZES.height * 0.14,
+    height: SIZES.base * 13,
+    width: SIZES.base * 13,
     alignSelf: 'center',
-    borderRadius: (SIZES.height * 0.14) / 2,
+    flex: 1,
+    borderRadius: (SIZES.base * 13) / 2,
   },
   textView: {
     flex: 2,
     marginLeft: 10,
   },
-  greetingView: {
-    marginTop: SIZES.height * 0.02,
-  },
+  greetingView: {},
   greetingText: {
-    color: 'white',
+    color: '#FFFFFF',
     fontFamily: 'OpenSans-Medium',
-    fontSize: SIZES.height * 0.022,
+    fontSize: SIZES.base * 2.2,
   },
   profileNameView: {
     marginTop: SIZES.height * 0.008,
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
   profileText: {
     color: 'white',
     fontFamily: 'OpenSans-Bold',
-    fontSize: SIZES.width * 0.05,
+    fontSize: SIZES.base * 3,
   },
   bpmView: {
     flex: 1,
@@ -275,19 +275,16 @@ const styles = StyleSheet.create({
   imageSet: {
     alignSelf: 'center',
   },
-  bpmTextView: {
-    marginTop: SIZES.height * 0.01,
-  },
   bpmText: {
     color: 'white',
     fontFamily: 'OpenSans-Bold',
-    fontSize: SIZES.width * 0.04,
+    fontSize: SIZES.base * 2.5,
   },
   indicatorMainView: {
     flex: 1,
     flexDirection: 'row',
     backgroundColor: '#f7f6f8',
-    height: SIZES.height * 0.08,
+    height: SIZES.base * 8,
     borderRadius: 10,
   },
   indicatorView: {
@@ -298,8 +295,8 @@ const styles = StyleSheet.create({
   },
   iconView: {
     justifyContent: 'center',
-    marginRight: SIZES.width * 0.03,
-    marginStart: SIZES.width * 0.03,
+    marginRight: SIZES.base * 2,
+    marginStart: SIZES.base * 2,
   },
   batteryIcon: {
     transform: [{rotate: '270deg'}],
@@ -307,7 +304,6 @@ const styles = StyleSheet.create({
   blutoothIcon: {
     padding: 3,
   },
-  indicatorTextView: {},
   indicatorText: {
     color: '#adadb5',
     fontFamily: 'OpenSans-Medium',
@@ -315,7 +311,7 @@ const styles = StyleSheet.create({
   indicatorSubText: {
     color: '#1b1a21',
     fontFamily: 'OpenSans-Regular',
-    fontSize: SIZES.width * 0.04,
+    fontSize: SIZES.base * 2,
   },
   textNoteView: {
     marginHorizontal: SIZES.base + '%',
