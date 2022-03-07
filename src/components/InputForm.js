@@ -1,10 +1,10 @@
-import React, {useRef, useEffect} from 'react';
+import React, {forwardRef} from 'react';
 import {View, StyleSheet, TextInput} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {SIZES} from '../constants/theme';
 import useOrientation from '../hooks/useOrientation';
 
-const InputForm = React.forwardRef((props, ref) => {
+const InputForm = forwardRef((props, ref) => {
   const orientation = useOrientation();
   const screen = orientation.isPortrait;
 
