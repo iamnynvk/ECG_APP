@@ -19,13 +19,15 @@ import {RadioButton} from 'react-native-paper';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 import {useBackHandler} from '../hooks/useBackHandler';
+import {en} from '../localization/en';
 
 const EditProfileScreen = ({navigation}) => {
+  const defaultImage =
+    'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80';
   // State here..
   const [data, setData] = useState({
     imageUrl: {
-      value:
-        'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80',
+      value: defaultImage,
       error: '',
       isValid: false,
     },
@@ -78,10 +80,36 @@ const EditProfileScreen = ({navigation}) => {
           isValid: true,
         },
       });
+
+      sheetRef.current.snapTo(1);
     });
   };
 
   // Open Galary action
+  const OpenGallery = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+    }).then(image => {
+      console.log(image);
+
+      const imageUri =
+        Platform.OS === 'ios' ? image.replace('file://', '') : image.path;
+
+      console.log('Image URI :', imageUri);
+      setData({
+        ...data,
+        imageUrl: {
+          ...data.imageUrl,
+          value: imageUri,
+          isValid: true,
+        },
+      });
+
+      sheetRef.current.snapTo(1);
+    });
+  };
 
   const renderHeader = () => (
     <View style={styles.headerView}>
@@ -94,28 +122,32 @@ const EditProfileScreen = ({navigation}) => {
   const renderContent = () => (
     <View style={styles.bsHeaderView}>
       <View>
-        <Text style={styles.bsHeaderTitle}>Upload Photo</Text>
-        <Text style={styles.bsHeaderDesc}>Choose Your Profile Picture</Text>
+        <Text style={styles.bsHeaderTitle}>
+          Upload Photo {en.editprofile.uploadphoto}
+        </Text>
+        <Text style={styles.bsHeaderDesc}>{en.editprofile.choosephoto}</Text>
       </View>
 
       <View style={styles.bsHeaderButtonMainView}>
         <TouchableOpacity onPress={OpenCamera}>
           <View style={styles.bsHeaderButtonView}>
-            <Text style={styles.bsButtonText}>Take Photo</Text>
+            <Text style={styles.bsButtonText}>{en.editprofile.takephoto}</Text>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={OpenGallery}>
           <View
             style={[styles.bsHeaderButtonView, {marginTop: SIZES.base * 2}]}>
-            <Text style={styles.bsButtonText}>Choose From Library</Text>
+            <Text style={styles.bsButtonText}>
+              {en.editprofile.chosegallery}
+            </Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => sheetRef.current.snapTo(1)}>
           <View
             style={[styles.bsHeaderButtonView, {marginTop: SIZES.base * 2}]}>
-            <Text style={styles.bsButtonText}>Cancel</Text>
+            <Text style={styles.bsButtonText}>{en.common.cancel}</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -162,37 +194,40 @@ const EditProfileScreen = ({navigation}) => {
             opacity: Animated.add(0.1, Animated.multiply(fall, 1.0)),
           },
         ]}>
-        <View style={styles.profileContainer}>
-          <View style={{flex: 1}}>
-            <View
-              style={{
-                // alignSelf: 'center',
-                justifyContent: 'center',
-                alignItems: 'center',
-                alignContent: 'center',
-                // borderWidth: 1,
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <View
+            style={{
+              height: 200,
+              width: 200,
+              alignSelf: 'center',
+              justifyContent: 'center',
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                sheetRef.current.snapTo(0);
               }}>
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <TouchableOpacity
-                  onPress={() => {
-                    sheetRef.current.snapTo(0);
-                  }}>
-                  <View style={styles.ProfileImageView}>
-                    <Image
-                      source={{uri: data.imageUrl.value}}
-                      style={styles.imageStyle}
-                      resizeMode="center"
-                    />
-                  </View>
+              <View
+                style={{
+                  borderRadius: 75,
+                  overflow: 'hidden',
+                  borderWidth: 2,
+                  borderColor: '#36295c',
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                }}>
+                <Image
+                  source={{uri: data.imageUrl.value}}
+                  style={{height: 150, width: 150, alignSelf: 'center'}}
+                />
+              </View>
 
-                  <View style={styles.pencilView}>
-                    <FontAwesome5 name="pencil-alt" size={20} color="#fff" />
-                  </View>
-                </TouchableOpacity>
-              </ScrollView>
-            </View>
+              <View style={styles.pencilView}>
+                <FontAwesome5 name="pencil-alt" size={20} color="#fff" />
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
+
         {/* User Detail Edit Here */}
         <View
           style={[
@@ -208,7 +243,7 @@ const EditProfileScreen = ({navigation}) => {
             showsVerticalScrollIndicator={false}>
             <View style={styles.textEditFieldView}>
               <LabelTextInput
-                label="First Name"
+                label={en.editprofile.firstname}
                 keyboard="default"
                 onBlur={firstNameValidation}
                 onSubmitEditing={() => {
@@ -227,7 +262,7 @@ const EditProfileScreen = ({navigation}) => {
 
               <LabelTextInput
                 ref={lnameRef}
-                label="Last Name"
+                label={en.editprofile.lastname}
                 keyboard="default"
                 onBlur={lastNameValidation}
                 value={data.lastName.value}
@@ -247,7 +282,7 @@ const EditProfileScreen = ({navigation}) => {
 
               <LabelTextInput
                 ref={emailRef}
-                label="Email"
+                label={en.editprofile.email}
                 keyboard="email-address"
                 onBlur={emailValidation}
                 value={data.email.value}
@@ -267,7 +302,7 @@ const EditProfileScreen = ({navigation}) => {
 
               <LabelTextInput
                 ref={dobRef}
-                label="DOB"
+                label={en.editprofile.dob}
                 keyboard="default"
                 onBlur={dobValidation}
                 value={data.dob.value}
@@ -283,7 +318,7 @@ const EditProfileScreen = ({navigation}) => {
               />
 
               <CountryPickerPhoneNum
-                label="Contact"
+                label={en.editprofile.contact}
                 value={data.contact.value}
                 onChange={text => {
                   setData({
@@ -296,7 +331,9 @@ const EditProfileScreen = ({navigation}) => {
               />
 
               <View style={{marginTop: SIZES.base * 3}}>
-                <Text style={styles.genderTextView}>Gender</Text>
+                <Text style={styles.genderTextView}>
+                  {en.editprofile.gender}
+                </Text>
                 <View style={styles.genderButtonMainView}>
                   <View style={{flexDirection: 'row'}}>
                     <RadioButton
@@ -305,7 +342,7 @@ const EditProfileScreen = ({navigation}) => {
                       status={checked === 'male' ? 'checked' : 'unchecked'}
                       onPress={() => setChecked('male')}
                     />
-                    <Text style={styles.genderText}>Male</Text>
+                    <Text style={styles.genderText}>{en.editprofile.male}</Text>
                   </View>
 
                   <View style={{flexDirection: 'row'}}>
@@ -315,7 +352,9 @@ const EditProfileScreen = ({navigation}) => {
                       status={checked === 'female' ? 'checked' : 'unchecked'}
                       onPress={() => setChecked('female')}
                     />
-                    <Text style={styles.genderText}>Female</Text>
+                    <Text style={styles.genderText}>
+                      {en.editprofile.female}
+                    </Text>
                   </View>
 
                   <View style={{flexDirection: 'row'}}>
@@ -325,7 +364,9 @@ const EditProfileScreen = ({navigation}) => {
                       status={checked === 'other' ? 'checked' : 'unchecked'}
                       onPress={() => setChecked('other')}
                     />
-                    <Text style={styles.genderText}>Other</Text>
+                    <Text style={styles.genderText}>
+                      {en.editprofile.other}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -345,43 +386,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#f6f5f8',
     flex: 1,
   },
-  profileContainer: {
-    flex: 1,
-    borderWidth: 1,
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // alignSelf: 'center',
-    // alignContent: 'center',
-    // borderWidth: 1,
-  },
-  ProfileImageView: {
-    // width: 200,
-    // height: 200,
-    // borderRadius: 100,
-    // overflow: 'hidden',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // borderWidth: 1,
-    // alignSelf: 'center',
-    // justifyContent: 'center',
-    // width: SIZES.width * 0.3,
-    // height: SIZES.width * 0.3,
-    // borderWidth: 1,
-  },
-  imageStyle: {
-    // flex: 1,
-    // width: 200,
-    // height: 200,
-    // borderRadius: 100,
-    // borderWidth: 1,
-    // borderColor: '#000',
-  },
   pencilView: {
     backgroundColor: '#36295c',
     position: 'absolute',
-    bottom: 0,
-    right: 0,
+    bottom: 15,
+    right: 15,
     width: 40,
     height: 40,
     borderRadius: 20,
