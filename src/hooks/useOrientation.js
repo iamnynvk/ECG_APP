@@ -19,6 +19,7 @@ const useOrientation = () => {
 
     return () => Dimensions.removeEventListener('change', onChange);
   }, []);
+
   return {
     ...screenInfo,
     isPortrait: isPortrait(),
